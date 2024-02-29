@@ -43,7 +43,7 @@ public class CartPage extends CartPageBase {
     }
 
     @Override
-    public void removeItemsFromCart() {
+    public void removeAllItemsFromCart() {
         while (removeItemFromCartButton.isElementPresent()){
             removeItemFromCartButton.click();
         }

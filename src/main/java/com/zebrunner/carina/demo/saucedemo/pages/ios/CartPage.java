@@ -21,9 +21,6 @@ public class CartPage extends CartPageBase {
     @FindBy(xpath = "//XCUIElementTypeStaticText[@name='%s']/../following-sibling::XCUIElementTypeOther[@name='test-Price']")
     private ExtendedWebElement removeItemFromCartButtonByName;
 
-//    @FindBy(xpath = "")
-//    private ExtendedWebElement removeItemFromCartButton;
-
     @ExtendedFindBy(iosPredicate = "name == 'test-CHECKOUT'")
     private ExtendedWebElement checkoutButton;
 
@@ -47,7 +44,7 @@ public class CartPage extends CartPageBase {
     }
 
     @Override
-    public void removeItemsFromCart() {
+    public void removeAllItemsFromCart() {
         while (removeItemFromCartButton.isElementPresent()){
             removeItemFromCartButton.click();
         }

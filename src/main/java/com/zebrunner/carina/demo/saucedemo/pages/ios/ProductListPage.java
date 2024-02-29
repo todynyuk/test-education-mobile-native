@@ -1,5 +1,6 @@
 package com.zebrunner.carina.demo.saucedemo.pages.ios;
 
+import com.google.common.collect.Comparators;
 import com.zebrunner.carina.demo.saucedemo.enums.ProductName;
 import com.zebrunner.carina.demo.saucedemo.enums.SortDropdown;
 import com.zebrunner.carina.demo.saucedemo.pages.common.BurgerMenuPageBase;
@@ -15,7 +16,11 @@ import org.openqa.selenium.support.FindBy;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @DeviceType(pageType = DeviceType.Type.IOS_PHONE, parentClass = ProductListPageBase.class)
 public class ProductListPage extends ProductListPageBase implements IMobileUtils {
@@ -41,7 +46,7 @@ public class ProductListPage extends ProductListPageBase implements IMobileUtils
     @ExtendedFindBy(iosPredicate = "name == 'test-Toggle'")
     private ExtendedWebElement itemsListViewButton;
 
-    @FindBy(xpath = "//XCUIElementTypeStaticText[@name='test-Item title' and @label='%s']/../following-sibling::*//XCUIElementTypeOther[@name='ADD TO CART']")
+    @FindBy(xpath = "//XCUIElementTypeStaticText[@name='test-Item title' and @label='%s']/../following-sibling::XCUIElementTypeOther//XCUIElementTypeOther[@name='ADD TO CART']")
     private ExtendedWebElement addToCartButton;
 
     @ExtendedFindBy(iosPredicate = "name == 'Terms of Service | Privacy Policy'")
@@ -85,38 +90,37 @@ public class ProductListPage extends ProductListPageBase implements IMobileUtils
     }
 
     private List<Double> getPricesList() {
-        itemsListViewButton.click();
-        List<Double> pricesList = new ArrayList<>();
-        while (!footerCopyrightText.isElementPresent()) {
-            for (ExtendedWebElement element : priceList) {
-                double bufferElement = Double.parseDouble(element.getAttribute("value").replace("$", ""));
-                if (!pricesList.contains(bufferElement)) {
-                    pricesList.add(bufferElement);
-                }
-            }
-            swipeUp(100);
-        }
-        return pricesList;
+        List<String>  bufferPricesList = priceList.stream()
+                .map(ExtendedWebElement::getText)
+                .collect(Collectors.toList());
+        List<Double> prices = bufferPricesList.stream()
+                .map(product -> Double.parseDouble(product.replace("$", "")))
+                .collect(Collectors.toList());
+        return prices;
     }
+
+//    private List<Double> getPricesList1() {
+//        Map<String,Double> itemNamesAndPricesList = new LinkedHashMap<>();
+//        String productName;
+//        double productPrice;
+//        while (!footerCopyrightText.isElementPresent()) {
+//            for (ExtendedWebElement element : itemsNameList) {
+//                productName = element.getText();
+//            }
+//            for (ExtendedWebElement element : priceList) {
+//                productPrice = Double.parseDouble(element.getAttribute("value").replace("$", ""));
+//            }
+//        }
+//    }
 
     @Override
     public boolean isPriceSortedLowToHigh() {
-        boolean result = false;
-        List<Double> pricesList = getPricesList();
-        for (int i = 0; i < pricesList.size() - 1; i++) {
-            result = (pricesList.get(i) < pricesList.get(i + 1));
-        }
-        return result;
+        return Comparators.isInOrder(getPricesList(), Comparator.naturalOrder());
     }
 
     @Override
     public boolean isPriceSortedHighToLow() {
-        boolean result = false;
-        List<Double> pricesList = getPricesList();
-        for (int i = 0; i < pricesList.size() - 1; i++) {
-            result = (pricesList.get(i) > pricesList.get(i + 1));
-        }
-        return result;
+        return Comparators.isInOrder(getPricesList(), Comparator.reverseOrder());
     }
 
     @Override

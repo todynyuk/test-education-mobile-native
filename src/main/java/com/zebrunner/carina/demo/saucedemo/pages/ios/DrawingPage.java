@@ -19,10 +19,10 @@ public class DrawingPage extends DrawingPageBase implements IMobileUtils {
     @ExtendedFindBy(iosClassChain = "**/XCUIElementTypeOther[`name == 'Signature Pad demo'`]")
     private ExtendedWebElement signaturePad;
 
-    @ExtendedFindBy(image = "")
+    @ExtendedFindBy(image = "img/empty_drawing_area.png")
     private ExtendedWebElement emptyDrawingArea;
 
-    @ExtendedFindBy(image = "")
+    @ExtendedFindBy(image = "img/drawing.png")
     private ExtendedWebElement drawing;
 
     public DrawingPage(WebDriver driver) {
@@ -33,9 +33,15 @@ public class DrawingPage extends DrawingPageBase implements IMobileUtils {
     public void drawPicture() {
         Point position = signaturePad.getLocation();
         Dimension size = signaturePad.getSize();
-        int startX;
-        int startY;
-        int endX;
+        int startX = position.x + size.width / 10;
+        int startY = position.y + size.height / 10;
+        int endX = startX * 5;
+        tap(startX, startY);
+        int pixelCount = 0;
+        for (int i = 0; i < 120; i++) {
+            swipe(startX, startY + pixelCount, endX, startY+pixelCount, 200);
+            pixelCount++;
+        }
     }
 
     @Override
@@ -45,11 +51,20 @@ public class DrawingPage extends DrawingPageBase implements IMobileUtils {
 
     @Override
     public boolean isEmptyPadPresent() {
+        setSetting(Setting.FIX_IMAGE_TEMPLATE_SCALE, true);
+        setSetting(Setting.IMAGE_MATCH_THRESHOLD, 0.7);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return emptyDrawingArea.isElementPresent();
     }
 
     @Override
     public boolean isDrawingPresent() {
+        setSetting(Setting.FIX_IMAGE_TEMPLATE_SCALE, true);
+        setSetting(Setting.IMAGE_MATCH_THRESHOLD, 0.7);
         return drawing.isElementPresent();
     }
 }
