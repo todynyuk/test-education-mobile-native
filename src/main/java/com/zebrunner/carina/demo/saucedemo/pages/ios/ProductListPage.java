@@ -17,9 +17,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @DeviceType(pageType = DeviceType.Type.IOS_PHONE, parentClass = ProductListPageBase.class)
@@ -90,7 +88,7 @@ public class ProductListPage extends ProductListPageBase implements IMobileUtils
     }
 
     private List<Double> getPricesList() {
-        List<String>  bufferPricesList = priceList.stream()
+        List<String> bufferPricesList = priceList.stream()
                 .map(ExtendedWebElement::getText)
                 .collect(Collectors.toList());
         List<Double> prices = bufferPricesList.stream()
@@ -98,20 +96,6 @@ public class ProductListPage extends ProductListPageBase implements IMobileUtils
                 .collect(Collectors.toList());
         return prices;
     }
-
-//    private List<Double> getPricesList1() {
-//        Map<String,Double> itemNamesAndPricesList = new LinkedHashMap<>();
-//        String productName;
-//        double productPrice;
-//        while (!footerCopyrightText.isElementPresent()) {
-//            for (ExtendedWebElement element : itemsNameList) {
-//                productName = element.getText();
-//            }
-//            for (ExtendedWebElement element : priceList) {
-//                productPrice = Double.parseDouble(element.getAttribute("value").replace("$", ""));
-//            }
-//        }
-//    }
 
     @Override
     public boolean isPriceSortedLowToHigh() {

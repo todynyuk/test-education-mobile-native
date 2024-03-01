@@ -16,7 +16,7 @@ public class BurgerMenuPage extends BurgerMenuPageBase {
     @FindBy(xpath = "//android.widget.TextView[@text='LOGOUT']")
     private ExtendedWebElement logoutButton;
 
-    @FindBy(xpath = "//android.widget.TextView[@content-desc='test-DRAWING']")
+    @FindBy(xpath = "//android.view.ViewGroup[@content-desc='test-DRAWING']")
     private ExtendedWebElement drawingButton;
 
     @FindBy(xpath = "//android.view.ViewGroup[@content-desc='test-Close']")
@@ -39,6 +39,7 @@ public class BurgerMenuPage extends BurgerMenuPageBase {
 
     @Override
     public DrawingPageBase clickOnDrawingButton() {
-        return null;
+        drawingButton.click();
+        return initPage(getDriver(), DrawingPageBase.class);
     }
 }

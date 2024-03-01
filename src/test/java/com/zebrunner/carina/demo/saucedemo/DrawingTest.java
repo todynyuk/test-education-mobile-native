@@ -19,10 +19,10 @@ public class DrawingTest implements IAbstractTest {
         ProductListPageBase productListPage = loginPage.autofillLogin();
         BurgerMenuPageBase burgerMenu = productListPage.clickOnBurgerMenu();
         DrawingPageBase drawingScreen = burgerMenu.clickOnDrawingButton();
-//        Assert.assertTrue(drawingScreen.isEmptyPadPresent(), "Drawing area is not empty.");
+        Assert.assertTrue(drawingScreen.isEmptyPadPresent(), "Drawing area is not empty.");
         drawingScreen.drawPicture();
-//        Assert.assertTrue(drawingScreen.isDrawingPresent(), "There is no drawing found.");
-//        drawingScreen.clickClearBtn();
-//        Assert.assertTrue(drawingScreen.isEmptyPadPresent(), "Drawing area is not cleared");
+        Assert.assertTrue(drawingScreen.isDrawingPresent(), "There is no drawing found.");
+        drawingScreen.clickClearBtn();
+        Assert.assertTrue(drawingScreen.isEmptyPadPresent(), "Drawing area is not cleared");
     }
 }
