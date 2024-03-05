@@ -6,6 +6,7 @@ import com.zebrunner.carina.webdriver.gui.AbstractPage;
 import org.openqa.selenium.WebDriver;
 
 public abstract class ProductListPageBase extends AbstractPage {
+
     public ProductListPageBase(WebDriver driver) {
         super(driver);
     }
